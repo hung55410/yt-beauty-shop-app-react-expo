@@ -16,6 +16,8 @@ import { fetchFeeds } from '../sanity';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_FEEDS } from '../context/actions/feedsActions';
 
+import { Feeds } from '../components';
+
 const HomeScreen = () => {
 
   const [searchTerm, setSearchTerm] = useState("")
@@ -35,7 +37,7 @@ const HomeScreen = () => {
       fetchFeeds().then(res => {
         // console.log(res)
         dispatch(SET_FEEDS(res))
-        console.log("Feed from store: ", feeds.feeds)
+        console.log("Feed from store: ", feeds?.feeds)
         setInterval(() => {
           setIsLoading(false)
         }, 2000)
@@ -81,9 +83,7 @@ const HomeScreen = () => {
             <ActivityIndicator size={"large"} color={"teal"} />
           </View>
         ) : (
-          <>
-            <Text>Feeds</Text>
-          </>
+          <Feeds feeds={feeds?.feeds} />
         )}
       </ScrollView> 
       {/* scrollable container end */}
