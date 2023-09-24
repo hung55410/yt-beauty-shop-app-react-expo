@@ -13,11 +13,17 @@ import React, { useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Screen3 } from '../assets';
 import { fetchFeeds } from '../sanity';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_FEEDS } from '../context/actions/feedsActions';
 
 const HomeScreen = () => {
 
   const [searchTerm, setSearchTerm] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+
+  const feeds = useSelector((state) => state.feeds)
+
+  const dispatch = useDispatch()
 
   const handleSearchTerm = (text) => {
     setSearchTerm(text)
@@ -27,7 +33,9 @@ const HomeScreen = () => {
     setIsLoading(true)
     try {
       fetchFeeds().then(res => {
-        console.log(res)
+        // console.log(res)
+        dispatch(SET_FEEDS(res))
+        console.log("Feed from store: ", feeds.feeds)
         setInterval(() => {
           setIsLoading(false)
         }, 2000)
