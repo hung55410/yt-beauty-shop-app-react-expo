@@ -24,11 +24,14 @@ const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const feeds = useSelector((state) => state.feeds)
+  const [filtered, setFiltered] = useState(null) 
 
   const dispatch = useDispatch()
 
   const handleSearchTerm = (text) => {
     setSearchTerm(text)
+
+    setFiltered(feeds?.feeds.filter(item => item.title.includes(text)))
   }
 
   useEffect(() => {
@@ -83,7 +86,9 @@ const HomeScreen = () => {
             <ActivityIndicator size={"large"} color={"teal"} />
           </View>
         ) : (
-          <Feeds feeds={feeds?.feeds} />
+          <Feeds 
+            feeds={filtered || filtered?.length > 0 ? filtered : feeds?.feeds}
+          />
         )}
       </ScrollView> 
       {/* scrollable container end */}

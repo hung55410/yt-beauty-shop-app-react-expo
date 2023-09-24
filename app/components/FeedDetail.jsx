@@ -6,7 +6,6 @@ const FeedDetail = ({data}) => {
 
     const screenWidth = Math.round(Dimensions.get("window").width)
     const cardWidth = screenWidth / 2 - 20
-    console.log(screenWidth);
 
   return (
     <View 
