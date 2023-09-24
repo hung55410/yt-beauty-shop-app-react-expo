@@ -4,20 +4,39 @@ import {
   SafeAreaView, 
   Image, 
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { MaterialIcons } from '@expo/vector-icons';
 import { Screen3 } from '../assets';
+import { fetchFeeds } from '../sanity';
 
 const HomeScreen = () => {
 
   const [searchTerm, setSearchTerm] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSearchTerm = (text) => {
     setSearchTerm(text)
   }
+
+  useEffect(() => {
+    setIsLoading(true)
+    try {
+      fetchFeeds().then(res => {
+        console.log(res)
+        setInterval(() => {
+          setIsLoading(false)
+        }, 2000)
+      })
+    } catch (error) {
+      console.log(error)
+      // setIsLoading(false)
+    }
+  }, [])
 
   return (
     <SafeAreaView className="flex-1 items-center justify-start bg-[#EBEAEF]">
@@ -47,6 +66,20 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
       {/* Search bbox ends here */}
+
+      {/* scrollable container start */}
+      <ScrollView className="flex-1 w-full h-full">
+        {isLoading ? (<View className="flex-1 h-80 items-center justify-center">
+            <ActivityIndicator size={"large"} color={"teal"} />
+          </View>
+        ) : (
+          <>
+            <Text>Feeds</Text>
+          </>
+        )}
+      </ScrollView> 
+      {/* scrollable container end */}
+
     </SafeAreaView>
   )
 }
